@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import express, {
   type Application,
   type Request,
@@ -5,15 +6,44 @@ import express, {
 } from "express";
 import { Pool } from "pg";
 
+dotenv.config();
+
 const app: Application = express();
 const port = 5000;
 
 app.use(express.json());
 
 const pool = new Pool({
-  connectionString: "process.env.DATABASE_URL_POOLED",
+  connectionString: process.env.DATABASE_URL_POOLED,
 });
 // console.log(pool);
+
+//
+const initDB = async () => {
+  try {
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255),
+        age INT,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+
+        is_Active BOOLEAN DEFAULT true,
+
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+
+
+        );
+        `);
+    console.log("Database Connected Successfully........!");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+initDB();
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
@@ -23,14 +53,29 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-app.post("/", async (req: Request, res: Response) => {
-  const { name, age, password } = req.body;
-  //   console.log(password);
-  res.status(200).json({
-    success: true,
-    message: "Data Received Successfully........!",
-    data: { name, age },
-  });
+app.post("/api/v1/users", async (req: Request, res: Response) => {
+  try {
+    const { name, age, email, password } = req.body;
+    const result = await pool.query(
+      `
+    INSERT INTO users (name, age, email, password) VALUES
+    ($1,$2,$3,$4) RETURNING * 
+    `,
+      [name, age, email, password],
+    );
+    //   console.log(result);
+    res.status(201).json({
+      success: true,
+      message: "User Created Successfully........!",
+      data: result.rows[0],
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error?.message,
+      error: error,
+    });
+  }
 });
 
 app.listen(port, () => {
