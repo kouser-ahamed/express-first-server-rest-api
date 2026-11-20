@@ -1,0 +1,28 @@
+{
+  "name": "express-first-server-rest-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kouser-ahamed/express-first-server-rest-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kouser-ahamed/express-first-server-rest-api/issues"
+  },
+  "homepage": "https://github.com/kouser-ahamed/express-first-server-rest-api#readme",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "tsx": "^4.23.15"
+  }
+}
