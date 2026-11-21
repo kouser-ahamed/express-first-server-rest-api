@@ -5,6 +5,7 @@ import express, {
   type Response,
 } from "express";
 import { pool } from "./db";
+import { userRoute } from "./modules/users/user.route";
 
 dotenv.config();
 
@@ -20,49 +21,7 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-app.post("/api/v1/users", async (req: Request, res: Response) => {
-  try {
-    const { name, age, email, password } = req.body;
-    const result = await pool.query(
-      `
-    INSERT INTO users (name, age, email, password) VALUES
-    ($1,$2,$3,$4) RETURNING * 
-    `,
-      [name, age, email, password],
-    );
-    //   console.log(result);
-    res.status(201).json({
-      success: true,
-      message: "User Created Successfully........!",
-      data: result.rows[0],
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message,
-      error: error,
-    });
-  }
-});
-
-app.get("/api/v1/users", async (req: Request, res: Response) => {
-  try {
-    const result = await pool.query(`
-    SELECT * FROM users`);
-    // console.log(result);
-    res.status(200).json({
-      success: true,
-      message: "Users Fetched Successfully........!",
-      data: result.rows,
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message,
-      error: error,
-    });
-  }
-});
+app.use("/api/v1/users", userRoute);
 
 app.get("/api/v1/users/:id", async (req: Request, res: Response) => {
   try {
