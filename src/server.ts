@@ -5,16 +5,16 @@ import express, {
   type Response,
 } from "express";
 import { Pool } from "pg";
+import config from "./config";
 
 dotenv.config();
 
 const app: Application = express();
-const port = 5000;
 
 app.use(express.json());
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL_POOLED,
+  connectionString: config.CONNECTION_STRING,
 });
 // console.log(pool);
 
@@ -169,6 +169,6 @@ app.delete("/api/v1/users/:id", async (req: Request, res: Response) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(config.port, () => {
   console.log(`Server is Running Successfully.......!`);
 });
