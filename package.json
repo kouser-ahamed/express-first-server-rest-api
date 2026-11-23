@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/kouser-ahamed/express-first-server-rest-api#readme",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.6",
     "typescript": "^7.0.2"
