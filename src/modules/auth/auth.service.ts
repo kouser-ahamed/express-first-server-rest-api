@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { pool } from "../../db";
+import jwt from "jsonwebtoken";
 
 const loginUserIntoDB = async (payload: {
   email: string;
@@ -28,6 +29,19 @@ const loginUserIntoDB = async (payload: {
   if (!user.rows[0].is_active) {
     throw new Error("Access Denied!!"); // Credintials -> Credentials
   }
+
+  const jwtPayload = {
+    id: user.rows[0].id,
+    name: user.rows[0].name,
+    email: user.rows[0].email,
+  };
+
+  const accessToken = jwt.sign(
+    jwtPayload,
+    "hDugpMToEn4WRZovKkmaH7u4vlmvhjgkmD97pVOzhnQ=",
+    { expiresIn: "1d" },
+  );
+  return accessToken;
 };
 
 export const authService = {
