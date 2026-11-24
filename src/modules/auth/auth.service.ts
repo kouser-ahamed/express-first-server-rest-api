@@ -1,12 +1,13 @@
+import bcrypt from "bcryptjs";
 import { pool } from "../../db";
 
 const loginUserIntoDB = async (payload: {
   email: string;
   password: string;
 }) => {
-  // check if the user exist
-  // check if the  password match
-  //check the user status
+  // check if the user exist -> Done
+  // check if the  password match->Done
+  //check the user status-> Done
   // if pass all then generate jwt  token
 
   const { email, password } = payload;
@@ -15,10 +16,17 @@ const loginUserIntoDB = async (payload: {
     `,
     [email],
   );
-  //   console.log(user.rows[0]);
+  console.log(user.rows[0]);
 
   if (user.rowCount === 0) {
     throw new Error("Invalid Credentials!!"); // Credintials -> Credentials
+  }
+  const matchPassword = await bcrypt.compare(password, user.rows[0].password);
+  if (!matchPassword) {
+    throw new Error("Invalid Credentials!!"); // Credintials -> Credentials
+  }
+  if (!user.rows[0].is_active) {
+    throw new Error("Access Denied!!"); // Credintials -> Credentials
   }
 };
 
