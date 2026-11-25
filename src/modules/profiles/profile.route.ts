@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { profileController } from "./profile.controller";
-const router = Router();
+const router: Router = Router();
 
 router.post("/", profileController.createProfile);
 
