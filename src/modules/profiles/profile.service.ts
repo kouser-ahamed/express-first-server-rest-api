@@ -6,7 +6,7 @@ const createProfileIntoDB = async (paylod: IProfile) => {
 
   const user = await pool.query(
     `
-    SELECT * FROm users WHERE id=$1`,
+    SELECT id FROM users WHERE id=$1`,
     [user_id],
   );
   if (user.rowCount === 0) {
