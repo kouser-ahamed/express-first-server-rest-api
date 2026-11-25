@@ -4,6 +4,16 @@ import { authService } from "./auth.service";
 const loginUser = async (req: Request, res: Response) => {
   try {
     const result = await authService.loginUserIntoDB(req.body);
+    const { refreshToken } = result;
+
+    res.cookie("refreshToken", refreshToken, {
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      httpOnly: true,
+      sameSite: "lax", // Adjust based on your requirements lax, strict, none-->CSRF
+      maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days in milliseconds
+      path: "/", // Set the path for the cookie
+      domain: "localhost", // Set the domain for the cookie (adjust as needed) example: "example.com" for production
+    });
 
     res.status(200).json({
       success: true,

@@ -42,10 +42,14 @@ const loginUserIntoDB = async (payload: {
     is_active: user.rows[0].is_active,
   });
 
-  const accessToken = jwt.sign(jwtPayload, config.jwtSecret as string, {
-    expiresIn: "1d",
+  const accessToken = jwt.sign(jwtPayload, config.jwt_Secret as string, {
+    expiresIn: "1h",
   });
-  return accessToken;
+
+  const refreshToken = jwt.sign(jwtPayload, config.refresh_Secret as string, {
+    expiresIn: "10d",
+  });
+  return { accessToken, refreshToken, user: user.rows[0] };
 };
 
 export const authService = {

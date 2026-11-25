@@ -20,7 +20,7 @@ const auth = (...roles: Role[]) => {
 
       const decode = jwt.verify(
         token as string,
-        config.jwtSecret as string,
+        config.jwt_Secret as string,
       ) as JwtPayload;
       //   console.log(decode);
       const user = await pool.query(`SELECT * FROM users WHERE id=$1`, [

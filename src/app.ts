@@ -17,6 +17,7 @@ const app: Application = express();
 
 const corsOptions = {
   origin: "http://localhost:3000",
+  credentials: true, // Allow cookies (refreshToken) from the frontend
   // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   optionsSuccessStatus: 200,
 };
