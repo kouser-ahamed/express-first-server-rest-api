@@ -2,10 +2,10 @@ import type { Request, Response, NextFunction } from "express";
 import config from "../config";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { pool } from "../db";
+import type { Role } from "../types";
 
-const auth = (...roles: any) => {
+const auth = (...roles: Role[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-
     // console.log(roles);
     // console.log("This is Protected Route......!");
     // console.log(req.headers.authorization)
@@ -37,6 +37,13 @@ const auth = (...roles: any) => {
       return res.status(403).json({
         success: false,
         message: "Forbidden Access",
+      });
+    }
+
+    if (roles.length > 0 && !roles.includes(user.rows[0].role)) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized Access",
       });
     }
 
