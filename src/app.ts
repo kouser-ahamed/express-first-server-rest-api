@@ -7,20 +7,13 @@ import express, {
 import { userRoute } from "./modules/users/user.route";
 import { profileRouter } from "./modules/profiles/profile.route";
 import { authRoute } from "./modules/auth/auth.route";
-import fs from "fs";
+import logger from "./middleware/logger";
 
 dotenv.config();
 
 const app: Application = express();
 
-app.use((req, res, next) => {
-  // console.log("Method -> Url-> Time:",req.method, req.url, Date.now());
-  const log = `\nMethod: ${req.method} | URL : ${req.url} | Time: ${Date.now()}\n`;
-  fs.appendFile("loger.txt", log, (err) => {
-    console.log(err);
-  });
-  next();
-});
+app.use(logger);
 
 app.use(express.json());
 
