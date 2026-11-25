@@ -10,6 +10,7 @@ import { authRoute } from "./modules/auth/auth.route";
 import logger from "./middleware/logger";
 import globalErrorHandler from "./middleware/globalErrorHandler";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions)); // Apply CORS middleware with options
+app.use(cookieParser()); // Middleware to parse cookies
 
 app.use(logger);
 
