@@ -9,10 +9,19 @@ import { profileRouter } from "./modules/profiles/profile.route";
 import { authRoute } from "./modules/auth/auth.route";
 import logger from "./middleware/logger";
 import globalErrorHandler from "./middleware/globalErrorHandler";
+import cors from "cors";
 
 dotenv.config();
 
 const app: Application = express();
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions)); // Apply CORS middleware with options
 
 app.use(logger);
 
@@ -29,7 +38,6 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/profiles", profileRouter);
 app.use("/api/v1/auth", authRoute);
-
 
 // Global Error Handler Middleware
 app.use(globalErrorHandler);
