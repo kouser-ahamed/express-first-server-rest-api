@@ -1,0 +1,9 @@
+Method: GET | URL : / | Time: 1795584353937
+
+Method: GET | URL : / | Time: 1795584365872
+
+Method: GET | URL : / | Time: 1795584369742
+
+Method: GET | URL : / | Time: 1795584381583
+
+Method: GET | URL : /api/v1/users | Time: 1795584552398
