@@ -4,14 +4,16 @@ import express, {
   type Request,
   type Response,
 } from "express";
-import { pool } from "./db";
 import { userRoute } from "./modules/users/user.route";
 import { profileRouter } from "./modules/profiles/profile.route";
 import { authRoute } from "./modules/auth/auth.route";
+import logger from "./middleware/logger";
 
 dotenv.config();
 
 const app: Application = express();
+
+app.use(logger);
 
 app.use(express.json());
 
