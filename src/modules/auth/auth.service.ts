@@ -18,7 +18,6 @@ const loginUserIntoDB = async (payload: {
     `,
     [email],
   );
-  console.log(user.rows[0]);
 
   if (user.rowCount === 0) {
     throw new Error("Invalid Credentials!!"); // Credintials -> Credentials
@@ -37,6 +36,11 @@ const loginUserIntoDB = async (payload: {
     email: user.rows[0].email,
     role: user.rows[0].role,
   };
+  // Log only non-sensitive fields (never password or token)
+  console.log("User logged in:", {
+    ...jwtPayload,
+    is_active: user.rows[0].is_active,
+  });
 
   const accessToken = jwt.sign(jwtPayload, config.jwtSecret as string, {
     expiresIn: "1d",
