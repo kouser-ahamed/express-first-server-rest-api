@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
+import sendResponse from "../utils/sendResponse";
 import config from "../config";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { pool } from "../db";
@@ -12,7 +13,8 @@ const auth = (...roles: Role[]) => {
       // console.log(req.headers.authorization)
       const token = req.headers.authorization;
       if (!token) {
-        return res.status(401).json({
+        return sendResponse(res, {
+          statusCode: 401,
           success: false,
           message: "Unauthorized Access",
         });
@@ -28,21 +30,24 @@ const auth = (...roles: Role[]) => {
       ]);
       // console.log(user.rows[0]);
       if (user.rowCount === 0) {
-        return res.status(404).json({
+        return sendResponse(res, {
+          statusCode: 404,
           success: false,
           message: "User Not Found",
         });
       }
 
       if (!user.rows[0].is_active) {
-        return res.status(403).json({
+        return sendResponse(res, {
+          statusCode: 403,
           success: false,
           message: "Forbidden Access",
         });
       }
 
       if (roles.length > 0 && !roles.includes(user.rows[0].role)) {
-        return res.status(403).json({
+        return sendResponse(res, {
+          statusCode: 403,
           success: false,
           message: "Unauthorized Access",
         });
