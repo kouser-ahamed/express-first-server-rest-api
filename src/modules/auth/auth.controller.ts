@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { authService } from "./auth.service";
+import sendResponse from "../../utils/sendResponse";
 
 const loginUser = async (req: Request, res: Response) => {
   try {
@@ -15,7 +16,8 @@ const loginUser = async (req: Request, res: Response) => {
       domain: "localhost", // Set the domain for the cookie (adjust as needed) example: "example.com" for production
     });
 
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: "User Logged In Successfully!",
       data: result,
@@ -29,14 +31,12 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-
-
-
 const generateToken = async (req: Request, res: Response) => {
   try {
-    console.log(req.cookies.refreshToken); 
-    const result = await authService.generateAccessToken(req.cookies.refreshToken);
-   
+    console.log(req.cookies.refreshToken);
+    const result = await authService.generateAccessToken(
+      req.cookies.refreshToken,
+    );
 
     res.status(200).json({
       success: true,
